@@ -27,6 +27,7 @@ jobs:
 
     - name: Build SDLMS
       run: |
+        cd sdlms
         mkdir -p custom_build
         cd custom_build
         cmake ..
@@ -36,4 +37,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: sdlms
-        path: custom_build/bin
+        path: sdlms/custom_build/bin
