@@ -1,0 +1,45 @@
+name: Build SDLMS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Clang
+      uses: llvm/llvm-project@main
+      with:
+        clang: 'true'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake
+
+    - name: Install FFmpeg
+      run: |
+        wget https://ffmpeg.org/releases/ffmpeg-7.0.tar.xz
+        tar xvf ffmpeg-7.0.tar.xz
+        cd ffmpeg-7.0
+        ./configure --enable-static --disable-shared --disable-ffmpeg --disable-ffplay --disable-debug --disable-doc --disable-asm --prefix=/usr/local
+        make
+        sudo make install
+
+    - name: Build SDLMS
+      run: |
+        cd build
+        cmake ..
+        make -j8
+
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: sdlms
+        path: build/bin
