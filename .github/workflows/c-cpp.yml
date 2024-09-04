@@ -33,6 +33,7 @@ jobs:
 
     - name: Build SDLMS
       run: |
+        cd sdlms
         mkdir -p build
         cd build
         cmake ..
