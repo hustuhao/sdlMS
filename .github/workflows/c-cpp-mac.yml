@@ -1,0 +1,39 @@
+name: Build SDLMS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Clang
+      run: |
+        brew install llvm
+
+    - name: Install dependencies
+      run: |
+        brew install cmake
+
+    - name: Install FFmpeg
+      run: |
+        brew install ffmpeg
+
+    - name: Build SDLMS
+      run: |
+        mkdir -p custom_build
+        cd custom_build
+        cmake ..
+        make -j8
+
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: sdlms
+        path: custom_build/bin
