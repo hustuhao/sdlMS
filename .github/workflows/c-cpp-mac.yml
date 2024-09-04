@@ -14,7 +14,6 @@ jobs:
       uses: actions/checkout@v3
       with:
         submodules: recursive  # Clone submodules
-        ssh-key: ${{ secrets.ACTIONS_DEPLOY_KEY }}  # 使用 SSH 密钥来访问子模块
         persist-credentials: false  # 避免使用 HTTPS 进行认证
         fetch-depth: 1              # 仅拉取最新一次提交，减少克隆时间
 
